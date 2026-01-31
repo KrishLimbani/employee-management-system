@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link, Outlet, useNavigate} from 'react-router-dom'
+import empContext from '../../context/Empcontext'
 
 const AdminDashboard = () => {
     const nav = useNavigate()
-    const [emp, setEmp] = useState()
 
   return (
     <>

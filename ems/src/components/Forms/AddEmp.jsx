@@ -1,6 +1,48 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
+import empContext from '../../context/Empcontext'
 
 const AddEmp = () => {
+
+  const {emp, setEmp} = useContext(empContext)
+    const[addEmp, setAddEmp] = useState({
+      fName: '',
+      lName: '',
+      email: '',
+      phone: '',
+      dob: '',
+      gender: '',
+      empID: 0,
+      dept: '',
+      role: '',
+      joinDate: '',
+      salary: 0
+    });
+
+    function handleInput(e){
+      const name = e.target.name;
+      const value = e.target.value;
+
+      setAddEmp((prev)=>{
+        return{
+          ...prev,
+          [name]: value
+        }
+      })
+    }
+    
+
+  function handleSubmit(e){
+    e.preventDefault()
+    setEmp((prev)=>{
+      return [
+        ...prev,
+        addEmp
+      ]
+    })
+    console.log("emp inserted")
+  }
+  console.log(emp)
+
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
@@ -12,7 +54,7 @@ const AddEmp = () => {
 
         {/* Form Card */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             {/* Personal Information Section */}
             <div>
               <h2 className="text-xl font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-200">
@@ -27,8 +69,10 @@ const AddEmp = () => {
                   <input
                     type="text"
                     id="firstName"
-                    name="firstName"
-                    required
+                    name="fName"
+                    value={addEmp.fName}
+                    onChange={handleInput}
+                    
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
                     placeholder="Enter first name"
                   />
@@ -42,8 +86,9 @@ const AddEmp = () => {
                   <input
                     type="text"
                     id="lastName"
-                    name="lastName"
-                    required
+                    name="lName"
+                    value={addEmp.lName}
+                    onChange={handleInput}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
                     placeholder="Enter last name"
                   />
@@ -58,7 +103,8 @@ const AddEmp = () => {
                     type="email"
                     id="email"
                     name="email"
-                    required
+                    value={addEmp.email}
+                    onChange={handleInput}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
                     placeholder="employee@company.com"
                   />
@@ -73,7 +119,8 @@ const AddEmp = () => {
                     type="tel"
                     id="phone"
                     name="phone"
-                    required
+                    value={addEmp.phone}
+                    onChange={handleInput}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
                     placeholder="+1 (555) 000-0000"
                   />
@@ -88,6 +135,8 @@ const AddEmp = () => {
                     type="date"
                     id="dob"
                     name="dob"
+                    value={addEmp.dob}
+                    onChange={handleInput}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
                   />
                 </div>
@@ -100,9 +149,11 @@ const AddEmp = () => {
                   <select
                     id="gender"
                     name="gender"
+                    value={addEmp.gender}
+                    onChange={handleInput}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
                   >
-                    <option value="">Select gender</option>
+                    <option value="" >Select gender</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                     <option value="other">Other</option>
@@ -208,8 +259,9 @@ const AddEmp = () => {
                   <input
                     type="text"
                     id="employeeId"
-                    name="employeeId"
-                    required
+                    name="empID"
+                    value={addEmp.empID}
+                    onChange={handleInput}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
                     placeholder="EMP-001"
                   />
@@ -222,8 +274,9 @@ const AddEmp = () => {
                   </label>
                   <select
                     id="department"
-                    name="department"
-                    required
+                    name="dept"
+                    value={addEmp.dept}
+                    onChange={handleInput}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
                   >
                     <option value="">Select department</option>
@@ -245,30 +298,12 @@ const AddEmp = () => {
                   <input
                     type="text"
                     id="position"
-                    name="position"
-                    required
+                    name="role"
+                    value={addEmp.role}
+                    onChange={handleInput}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
                     placeholder="e.g., Software Engineer"
                   />
-                </div>
-
-                {/* Employment Type */}
-                <div>
-                  <label htmlFor="employmentType" className="block text-sm font-medium text-gray-700 mb-2">
-                    Employment Type <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    id="employmentType"
-                    name="employmentType"
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
-                  >
-                    <option value="">Select type</option>
-                    <option value="full-time">Full Time</option>
-                    <option value="part-time">Part Time</option>
-                    <option value="contract">Contract</option>
-                    <option value="intern">Intern</option>
-                  </select>
                 </div>
 
                 {/* Join Date */}
@@ -280,7 +315,8 @@ const AddEmp = () => {
                     type="date"
                     id="joinDate"
                     name="joinDate"
-                    required
+                    value={addEmp.joinDate}
+                    onChange={handleInput}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
                   />
                 </div>
@@ -296,42 +332,12 @@ const AddEmp = () => {
                       type="number"
                       id="salary"
                       name="salary"
+                      value={addEmp.salary}
+                      onChange={handleInput}
                       className="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
                       placeholder="50000"
                     />
                   </div>
-                </div>
-
-                {/* Manager */}
-                <div>
-                  <label htmlFor="manager" className="block text-sm font-medium text-gray-700 mb-2">
-                    Reporting Manager
-                  </label>
-                  <input
-                    type="text"
-                    id="manager"
-                    name="manager"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
-                    placeholder="Manager name"
-                  />
-                </div>
-
-                {/* Status */}
-                <div>
-                  <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-2">
-                    Status <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    id="status"
-                    name="status"
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
-                  >
-                    <option value="">Select status</option>
-                    <option value="active">Active</option>
-                    <option value="probation">Probation</option>
-                    <option value="inactive">Inactive</option>
-                  </select>
                 </div>
               </div>
             </div>
