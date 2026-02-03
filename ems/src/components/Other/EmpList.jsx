@@ -1,12 +1,27 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import empContext from '../../context/Empcontext'
 
-const EmpList = () => {
-  const emp = JSON.parse(localStorage.getItem('emp')) || []
+const EmpList = ({handleEmpCardToggle}) => {
+
+  const {emp, setEmp, setEditingEmp} = useContext(empContext)
+  const navigate = useNavigate()
+
   const [showAll, setShowAll] = useState(false)
 
   const visibleEmp = showAll ? emp : emp.slice(0, 4)
 
   const hasMore = emp.length > 4
+
+  function handleDelete(id){
+    setEmp((prev)=>prev.filter(emp => emp.empID !== id) )
+    console.log("deleting")
+  }
+
+  function handleEditClick(empItem){
+    setEditingEmp(empItem)
+    navigate('/admin/addEmp')
+  }
 
   return (
     <div className="overflow-x-auto">
@@ -37,13 +52,19 @@ const EmpList = () => {
                   {empItem.task}
                 </td>
                 <td className="px-6 py-4 text-right space-x-2">
-                  <button className="inline-flex items-center px-3 py-1 text-xs font-medium border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50 cursor-pointer">
+                  <button 
+                  onClick={(()=>handleEmpCardToggle(empItem.empID))}
+                  className="inline-flex items-center px-3 py-1 text-xs font-medium border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50 cursor-pointer">
                     View
                   </button>
-                  <button className="inline-flex items-center px-3 py-1 text-xs font-medium rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer">
+                  <button 
+                  onClick={() => handleEditClick(empItem)}
+                  className="inline-flex items-center px-3 py-1 text-xs font-medium rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer">
                     Edit
                   </button>
-                  <button className="inline-flex items-center px-3 py-1 text-xs font-medium rounded-lg bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 cursor-pointer">
+                  <button 
+                  onClick={()=>handleDelete(empItem.empID)} 
+                  className="inline-flex items-center px-3 py-1 text-xs font-medium rounded-lg bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 cursor-pointer">
                     Delete
                   </button>
                 </td>

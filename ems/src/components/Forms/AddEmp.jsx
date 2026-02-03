@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import empContext from '../../context/Empcontext'
 
 const AddEmp = () => {
 
-  const {emp, setEmp} = useContext(empContext)
+  const {emp, setEmp, editingEmp, setEditingEmp} = useContext(empContext)
     const[addEmp, setAddEmp] = useState({
       fName: '',
       lName: '',
@@ -17,6 +17,12 @@ const AddEmp = () => {
       joinDate: '',
       salary: 0
     });
+
+    useEffect(() => {
+      if (editingEmp) {
+        setAddEmp(editingEmp);
+      }
+    }, [editingEmp]);
 
     function handleInput(e){
       const name = e.target.name;
@@ -33,13 +39,50 @@ const AddEmp = () => {
 
   function handleSubmit(e){
     e.preventDefault()
-    setEmp((prev)=>{
-      return [
-        ...prev,
-        addEmp
-      ]
-    })
-    console.log("emp inserted")
+    
+    if (editingEmp) {
+      // Update existing employee
+      setEmp((prev)=>
+        prev.map((item) => item.empID === editingEmp.empID ? addEmp : item)
+      )
+      setEditingEmp(null)
+      setAddEmp({
+        fName: '',
+        lName: '',
+        email: '',
+        phone: '',
+        dob: '',
+        gender: '',
+        empID: 0,
+        dept: '',
+        role: '',
+        joinDate: '',
+        salary: 0
+      })
+      console.log("emp updated")
+    } else {
+      // Add new employee
+      setEmp((prev)=>{
+        return [
+          ...prev,
+          addEmp
+        ]
+      })
+      setAddEmp({
+        fName: '',
+        lName: '',
+        email: '',
+        phone: '',
+        dob: '',
+        gender: '',
+        empID: 0,
+        dept: '',
+        role: '',
+        joinDate: '',
+        salary: 0
+      })
+      console.log("emp inserted")
+    }
   }
 
   return (
@@ -47,8 +90,12 @@ const AddEmp = () => {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Add New Employee</h1>
-          <p className="text-gray-600">Fill in the employee details below</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            {editingEmp ? 'Edit Employee' : 'Add New Employee'}
+          </h1>
+          <p className="text-gray-600">
+            {editingEmp ? 'Update employee details below' : 'Fill in the employee details below'}
+          </p>
         </div>
 
         {/* Form Card */}
@@ -400,6 +447,22 @@ const AddEmp = () => {
             <div className="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
               <button
                 type="button"
+                onClick={() => {
+                  setEditingEmp(null)
+                  setAddEmp({
+                    fName: '',
+                    lName: '',
+                    email: '',
+                    phone: '',
+                    dob: '',
+                    gender: '',
+                    empID: 0,
+                    dept: '',
+                    role: '',
+                    joinDate: '',
+                    salary: 0
+                  })
+                }}
                 className="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors"
               >
                 Cancel
@@ -408,7 +471,7 @@ const AddEmp = () => {
                 type="submit"
                 className="px-6 py-3 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors duration-200"
               >
-                Add Employee
+                {editingEmp ? 'Update Employee' : 'Add Employee'}
               </button>
             </div>
           </form>

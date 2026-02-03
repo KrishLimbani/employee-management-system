@@ -2,9 +2,18 @@ import React, { useContext, useState } from 'react'
 import { Link, Outlet, useNavigate } from 'react-router-dom'
 import empContext from '../../context/Empcontext'
 import EmpList from '../Other/EmpList'
+import EmpCard from '../Other/EmpCard'
 
 const AdminDashboard = () => {
   const nav = useNavigate()
+
+  const [empCardToggle, setEmpCardToggle] = useState(false)
+  const [empCardId, setEmpCardId] = useState(null)
+
+  function handleEmpCardToggle(id) {
+    setEmpCardId(id)
+    setEmpCardToggle(!empCardToggle)
+  }
 
   return (
     <>
@@ -121,7 +130,7 @@ const AdminDashboard = () => {
                 <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                   <h2 className="text-lg font-semibold text-gray-900">Employee List</h2>
                 </div>
-                <EmpList/>
+                <EmpList handleEmpCardToggle={handleEmpCardToggle} />
               </div>
 
               {/* Task Overview */}
@@ -259,6 +268,13 @@ const AdminDashboard = () => {
             </div>
           </section>
         </main>
+        {empCardToggle && (
+          <div
+            className="fixed inset-0 z-40 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+          >
+            <EmpCard id={empCardId} handleEmpCardToggle={handleEmpCardToggle} />
+          </div>
+        )}
       </div>
     </>
   )

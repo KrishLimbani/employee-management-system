@@ -7,13 +7,15 @@ const EmpContextProvider = ({children}) => {
       return savedEmp ? JSON.parse(savedEmp) : []
     })
 
+    const [editingEmp, setEditingEmp] = useState(null)
+
     useEffect(()=>{
       localStorage.setItem('emp', JSON.stringify(emp))
     },[emp])
 
     
   return (
-    <empContext.Provider value={{emp, setEmp}}>
+    <empContext.Provider value={{emp, setEmp, editingEmp, setEditingEmp}}>
         {children}
     </empContext.Provider>
   )

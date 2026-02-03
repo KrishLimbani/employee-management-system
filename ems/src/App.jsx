@@ -7,6 +7,7 @@ import { Route, Routes } from 'react-router-dom'
 import empContext from './context/Empcontext'
 import EmpContextProvider from './context/EmpContextProvider'
 import EmpList from './components/Other/EmpList'
+import EmpCard from './components/Other/EmpCard'
 
 function App() {  
 
@@ -17,7 +18,7 @@ function App() {
       <Route path="admin" element={<AdminDashboard/>}></Route>
       <Route path="admin/addEmp" element={<AddEmp/>}></Route>
     </Routes>
-    {/* <EmpList/> */}
+    {/* <EmpCard/> */}
     </EmpContextProvider>
   )
 }
